@@ -2,12 +2,12 @@
 /*
 Plugin Name: MetaMagic 
 Plugin URI: http://blog.hughestech.com/blog/metamagic/
-Description: This WordPress Plugin Generates meta description tags and meta keywords tag for your single posts automatically.
-Version: 1.0
+Description: This WordPress Plugin Generates meta description tags and meta keywords tag for your blog posts automatically.
+Version: 1.1
 Author: HughesTech Labs
 Author URI: http://blog.hughestech.com/blog/
 
-Copyrighted (C)2008 Hughes Technologies, Inc. email : plugins@hughestech.com
+Copyrighted (C)2008 - 2011 Hughes Technologies, Inc. email : plugins@hughestech.com
 
 Hughes Technologies, Inc. grants a license of use for MetaMagic.
 It is our hope that it will be useful, but users of MetaMagic use it
@@ -50,29 +50,58 @@ function metamagic_main() {
                echo '<!-- MetaMagic WordPress plugin; http://blog.hughestech.com/blog/metamagic/ -->' . "\n";
 	       if( $options['metamagic_description'] == 1 ) {
 		   $recentpost = get_post($post->ID); 
-		   $content = $recentpost->post_content; 
+		   $content = $recentpost->post_content;
+		   //Legacy support for version 1.0
                    $acontent = strip_tags($content,'<u></u>');
-                   $start = strpos($acontent, '<u>');
-                   if($start) {
-                       $end = strpos($acontent, '</u>');
-                       $content = substr($acontent, $start+3, $end - $start -1);
-                       $acontent = strip_tags($content);
-                       $content = str_replace("\r", ' ', $acontent);
-                       $content = str_replace("\n", ' ', $content);
-                       $content = str_replace("\t", '', $content);  
-                       $description = $content;
-                       echo '<meta name="description" content="'. $description .'" />' . "\n";
-                      }
-                    }
-                   if( $options['metamagic_keywords'] == 1 ) {                
-                       if ( function_exists("get_the_tags") ) {
-                                $wordpress23x = true;  
-				$tags = get_the_tags( $post->ID );
-			   }
-			   else if( function_exists("UTW_ShowTagsForCurrentPost") ) {
-				global $utw;
-				$tags = $utw->GetTagsForPost( $post->ID, 8);		
-			   }
+                   
+                   if(preg_match('/<u>/',$acontent)){
+                       $legacy =1;
+                     }else{
+                       $legacy =0;
+                     }        
+                   if($legacy == 0){
+                      $acontent = strip_tags($content,'<MetaMagic></MetaMagic>');
+                     }  
+                   if($legacy==1){
+                      $start = strpos($acontent, '<u>');
+                     }else{
+                      $start = strpos($acontent, '<MetaMagic>');
+                     }
+                      
+    //legacy support for underline      
+    if(($start) && ($legacy==1))
+      {
+        $end = strpos($acontent, '</u>');
+        $content = substr($acontent, $start+3, $end - $start -1);
+        $acontent = strip_tags($content);
+        $content = str_replace("\r", ' ', $acontent);
+        $content = str_replace("\n", ' ', $content);
+        $content = str_replace("\t", '', $content);  
+        $description = $content;
+        echo '<meta name="description" content="'. $description .'" />' . "\n";
+      }
+    if(($start) && ($legacy==0))
+      {
+        $end = strpos($acontent, '</MetaMagic>');
+        $content = substr($acontent, $start+11, $end - $start -1);
+        $acontent = strip_tags($content);
+        $content = str_replace("\r", ' ', $acontent);
+        $content = str_replace("\n", ' ', $content);
+        $content = str_replace("\t", '', $content);
+        $description = $content;
+        echo '<meta name="description" content="'. $description .'" />' . "\n";
+      }               
+  }
+    if( $options['metamagic_keywords'] == 1 ) {                
+      if ( function_exists("get_the_tags"))
+        {
+          $wordpress23x = true;  
+          $tags = get_the_tags( $post->ID );
+        }
+	   else if( function_exists("UTW_ShowTagsForCurrentPost") ) {
+                 global $utw;
+		 $tags = $utw->GetTagsForPost( $post->ID, 8);		
+	        }
                              
                              if( $tags ) {
 				 $cnt = 0;
@@ -148,6 +177,27 @@ function metamagic_update_options() {
 		
       }
 
+function replaceit($content) {
+ if(!detect_preview_mode())
+   {
+    $content = str_replace( '</MetaMagic>' , '' , $content);
+    $content = str_replace( '<MetaMagic>','',$content);
+   } 
+   return $content;
+  }
+  
+function detect_preview_mode(){
+   $query = $_SERVER['QUERY_STRING'];
+   if(preg_match('/preview=true/',$query)){
+      $theanswer =1;
+      }else{
+      $theanswer =0;
+      }
+    return $theanswer;      
+ }   
+    
+add_filter('the_content', 'replaceit');
+    
 
 add_action('admin_menu','metamagic_menu');
 
