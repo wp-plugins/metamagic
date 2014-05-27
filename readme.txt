@@ -2,7 +2,7 @@
 Donate link: http://blog.hughestech.com/blog/metamagic/
 Tags: meta keywords, meta-description, meta-tags, automatic, tags, keywords, seo
 Stable tag: trunk
-Tested up to: 3.2
+Tested up to: 3.9.1
 
 This creates meta keywords and meta descriptions for single posts.
 
