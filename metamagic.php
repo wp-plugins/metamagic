@@ -3,11 +3,11 @@
 Plugin Name: MetaMagic 
 Plugin URI: http://blog.hughestech.com/blog/metamagic/
 Description: This WordPress Plugin Generates meta description tags and meta keywords tag for your blog posts automatically.
-Version: 1.1
+Version: 1.2
 Author: HughesTech Labs
 Author URI: http://blog.hughestech.com/blog/
 
-Copyrighted (C)2008 - 2011 Hughes Technologies, Inc. email : plugins@hughestech.com
+Copyrighted (C)2008 - 2014 Hughes Technologies, Inc. email : plugins@hughestech.com
 
 Hughes Technologies, Inc. grants a license of use for MetaMagic.
 It is our hope that it will be useful, but users of MetaMagic use it
