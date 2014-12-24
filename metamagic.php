@@ -3,7 +3,7 @@
 Plugin Name: MetaMagic 
 Plugin URI: http://blog.hughestech.com/blog/metamagic/
 Description: This WordPress Plugin Generates meta description tags and meta keywords tag for your blog posts automatically.
-Version: 1.2
+Version: 1.3
 Author: HughesTech Labs
 Author URI: http://blog.hughestech.com/blog/
 
@@ -129,10 +129,11 @@ function metamagic_main() {
         }
 }
 
+add_action('admin_menu','metamagic_menu');
 
 function metamagic_menu() {
 	
-	add_options_page('MetaMagic', 'MetaMagic', 8, basename(__FILE__), 'metamagic_admin');
+ add_options_page('MetaMagic', 'MetaMagic', 8, basename(__FILE__), 'metamagic_admin');
 	
 }
 
@@ -154,12 +155,21 @@ function metamagic_admin() {
 	echo '<fieldset>';
 	echo '<h3>Select Automatic Features:</h3>';
 	echo '<p><input type="checkbox" id="metamagic_enable" name="metamagic_enable" '. $show_enable.' /> <label for="MetaMagic_enable">'. __("Enable ( If enabled, meta tags will be added to your header )") .'</label></p>';
-	echo '<p><input type="checkbox" id="metamagic_description" name="metamagic_description" '. $show_description.' /> <label for="MetaMagic_description">'. __("Meta Description ( If checked, meta description will be your underlined text within your post)") .'</label></p>';
+	echo '<p><input type="checkbox" id="metamagic_description" name="metamagic_description" '. $show_description.' /> <label for="MetaMagic_description">'. __("Meta Description ( If checked, the meta description will be any text within these tags: <b>&ltMetaMagic&gttext in your post&lt/MetaMagic&gt)</b>") .'</label></p>';
 	echo '<p><input type="checkbox" id="metamagic_keywords" name="metamagic_keywords" '. $show_keywords.' /> <label for="MetaMagic_keywords">'. __("Meta Keywords ( if checked, your tags will be added as meta keywords when posting )") .'</label></p>';
 	echo '<p class="submit">';
 	echo '<input type="submit" name="metamagic_submit" value="Save settings" />';
 	echo '</fieldset>';
 	echo '</form>';
+      echo 'If you enjoy using MetaMagic, please give it 5 stars on WordPress<br />'; 
+      echo '<a href="http://wordpress.org/support/view/plugin-reviews/metamagic" target="_blank" title="MetaMagic Reviews">Rate MetaMagic</a><br /><br />';
+      echo 'Please Help our Dev Team:<br />';
+      echo '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">';
+      echo '<input name="cmd" type="hidden" value="_s-xclick" /><br />';
+      echo '<input name="hosted_button_id" type="hidden" value="YABX66T8E52ZN" /><br />';
+      echo '<input alt="PayPal - The safer, easier way to pay online!" name="submit" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" type="image" /><br />';
+      echo '<img src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" alt="" width="1" height="1" border="0" /></form><br /><br />';
+      echo 'That\'s all folks, have fun and improve your SE Rankings....';
 	echo '</div>';
 
 }
@@ -197,12 +207,24 @@ function detect_preview_mode(){
  }   
     
 add_filter('the_content', 'replaceit');
-    
-
-add_action('admin_menu','metamagic_menu');
-
 
 add_action('wp_head','metamagic_main', 1);
+add_filter('plugin_action_links', 'myplugin_plugin_action_links', 10, 2);
 
+function myplugin_plugin_action_links($links, $file) {
+    static $this_plugin;
 
-?>
+    if (!$this_plugin) {
+        $this_plugin = plugin_basename(__FILE__);
+    }
+
+    if ($file == $this_plugin) {
+        // The "page" query string value must be equal to the slug
+        // of the Settings admin page we defined earlier, which in
+        // this case equals "myplugin-settings".
+        $settings_link = '<a href="' . get_bloginfo('wpurl') . '/wp-admin/options-general.php?page=metamagic">Settings</a>';
+        array_unshift($links, $settings_link);
+    }
+
+    return $links;
+}?>
