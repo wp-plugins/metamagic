@@ -1,10 +1,10 @@
-=== MetaMagic ===
+=== MetaMagic SEO Plugin ===
 Donate link: http://blog.hughestech.com/blog/metamagic/
-Tags: meta keywords, meta-description, meta-tags, automatic, tags, keywords, seo
+Tags: seo, meta keywords, meta-description, meta-tags, automatic, tags, keywords, seo
 Stable tag: trunk
 Tested up to: 4.1
 
-This creates meta keywords and meta descriptions for single posts.
+This SEO Plugin creates meta keywords and meta descriptions for single posts.
 
 == Description ==
 
@@ -17,4 +17,4 @@ This WordPress plugin creates the meta keywords tag and the meta descriptions ta
 1. Activate the plugin.
 1. Configure it through the Options panel.
 
-That's all folks, have fun and improve your SE Rankings....
+That's all folks, have fun and improve your SEO Rankings....
