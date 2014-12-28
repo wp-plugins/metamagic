@@ -1,8 +1,8 @@
 <?php
 /*
-Plugin Name: MetaMagic 
+Plugin Name: MetaMagic SEO Plugin 
 Plugin URI: http://blog.hughestech.com/blog/metamagic/
-Description: This WordPress Plugin Generates meta description tags and meta keywords tag for your blog posts automatically.
+Description: This SEO WordPress Plugin Generates meta description tags and meta keywords tag for your blog posts automatically.
 Version: 1.3
 Author: HughesTech Labs
 Author URI: http://blog.hughestech.com/blog/
