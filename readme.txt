@@ -2,7 +2,7 @@
 Donate link: http://blog.hughestech.com/blog/metamagic/
 Tags: seo, meta keywords, meta-description, meta-tags, automatic, tags, keywords, seo
 Stable tag: trunk
-Tested up to: 4.2.1
+Tested up to: 4.3
 
 This SEO Plugin creates meta keywords and meta descriptions for single posts.
 
