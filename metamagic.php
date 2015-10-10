@@ -3,7 +3,7 @@
 Plugin Name: MetaMagic SEO Plugin 
 Plugin URI: http://blog.hughestech.com/blog/metamagic/
 Description: This SEO WordPress Plugin Generates meta description tags and meta keywords tag for your blog posts automatically.
-Version: 1.4
+Version: 1.5
 Author: HughesTech Labs
 Author URI: http://blog.hughestech.com/blog/
 
@@ -48,7 +48,7 @@ function metamagic_main()
                $description = '';
                $keywords = '';
                echo "\n";
-               echo '<!-- MetaMagic WordPress plugin; http://blog.hughestech.com/blog/metamagic/ -->' . "\n";
+               echo '<!-- MetaMagic v1.5 WordPress plugin; http://blog.hughestech.com/blog/metamagic/ -->' . "\n";
 	       if( $options['metamagic_description'] == 1 ) {
 		   $recentpost = get_post($post->ID); 
 		   $content = $recentpost->post_content;
@@ -101,26 +101,29 @@ function metamagic_main()
     }
    } //is single post end
         
-  if( is_page() ) {  //Single page being displayed New for Version 1.4             
+  if( is_page() ) {  //Single page being displayed New for Version 1.5             
     global $page; 
     $description = '';
     $keywords = '';
-    echo "\n";
-    echo '<!-- MetaMagic WordPress plugin; http://blog.hughestech.com/blog/metamagic/ -->' . "\n";
     if( $options['metamagic_description'] == 1 )
      {
        $recentpost =  get_page($page->ID); 
        $content = $recentpost->post_content;
-       $acontent = strip_tags($content,'<MetaMagic></MetaMagic>');
-       $start = strpos($acontent, '<MetaMagic>');                                                  
-       $end = strpos($acontent, '</MetaMagic>');
-       $content = substr($acontent, $start+11, $end - $start -1);
-       $acontent = strip_tags($content);
-       $content = str_replace("\r", ' ', $acontent);
-       $content = str_replace("\n", ' ', $content);
-       $content = str_replace("\t", '', $content);
-       $description = $content;
-       echo '<meta name="description" content="'. $description .'" />' . "\n";
+       if(preg_match("/<MetaMagic>/",$content)) //Check if MetaMagic tag exists 
+        {
+          $acontent = strip_tags($content,'<MetaMagic></MetaMagic>');
+          $start = strpos($acontent, '<MetaMagic>');                                                  
+          $end = strpos($acontent, '</MetaMagic>');
+          $content = substr($acontent, $start+11, $end - $start -1);
+          $acontent = strip_tags($content);
+          $content = str_replace("\r", ' ', $acontent);
+          $content = str_replace("\n", ' ', $content);
+          $content = str_replace("\t", '', $content);
+          $description = $content;
+          echo "\n";
+          echo '<!-- MetaMagic v1.5 WordPress plugin; http://blog.hughestech.com/blog/metamagic/ -->' . "\n";
+          echo '<meta name="description" content="'. $description .'" />' . "\n";
+        }
      }
               	
  } //is page end
